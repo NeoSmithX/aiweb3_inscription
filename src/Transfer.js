@@ -5,12 +5,12 @@ import { useSubstrateState } from './substrate-lib'
 
 export default function Main(props) {
   const [status, setStatus] = useState(null)
-  const [formState, setFormState] = useState({ addressTo: '', amount: 0 })
+  const [formState, setFormState] = useState({ addressTo: '', amount: 0, questionID: '', answer: '' })
 
   const onChange = (_, data) =>
     setFormState(prev => ({ ...prev, [data.state]: data.value }))
 
-  const { addressTo, amount } = formState
+  const { questionID,answer } = formState //addressTo, amount,
 
   const { keyring } = useSubstrateState()
   const accounts = keyring.getPairs()
@@ -30,15 +30,24 @@ export default function Main(props) {
       <Form>
         <Form.Field>
           <Label basic color="teal">
-            <Icon name="hand point right" />1 Unit = 1000000000000&nbsp;
+            <div>
+              <Icon name="hand point right" />输入 1: 问题编号
+            </div>
+            <div>
+              <Icon name="hand point right" />Input 1: Question ID
+            </div>
           </Label>
           <Label
             basic
             color="teal"
             style={{ marginLeft: 0, marginTop: '.5em' }}
           >
-            <Icon name="hand point right" />
-            Transfer more than the existential amount for account with 0 balance
+            <div>
+              <Icon name="hand point right" />输入 2: 你的答案
+            </div>
+            <div>
+              <Icon name="hand point right" />Input 2: Your answer
+            </div>
           </Label>
         </Form.Field>
 
@@ -54,27 +63,45 @@ export default function Main(props) {
           />
         </Form.Field>
 
+
+
+        {/*  */}
         <Form.Field>
           <Input
             fluid
-            label="To"
+            label="问题编号/Question_ID"
             type="text"
-            placeholder="address"
-            value={addressTo}
-            state="addressTo"
+            placeholder="only Number/只能是数字"
+            value={questionID}
+            state="questionID"
             onChange={onChange}
           />
         </Form.Field>
         <Form.Field>
           <Input
             fluid
-            label="Amount"
-            type="number"
-            state="amount"
+            label="你的答案/Your_Answer"
+            type="text"
+            placeholder="only English/只能是英文"
+            value={answer}
+            state="answer"
             onChange={onChange}
           />
         </Form.Field>
         <Form.Field style={{ textAlign: 'center' }}>
+          <TxButton
+            label="Submit"
+            type="SIGNED-TX"
+            setStatus={setStatus}
+            attrs={{
+              palletRpc: 'system',
+              callable: 'remark',
+              inputParams: ['{"p":"aiweb3","o":"mintAnswer","questionID":"'+questionID+'","answer":"'+answer+'"}'],
+              paramFields: [true],
+            }}
+          />
+        </Form.Field>
+        {/* <Form.Field style={{ textAlign: 'center' }}>
           <TxButton
             label="Submit"
             type="SIGNED-TX"
@@ -86,7 +113,7 @@ export default function Main(props) {
               paramFields: [true, true],
             }}
           />
-        </Form.Field>
+        </Form.Field> */}
         <div style={{ overflowWrap: 'break-word' }}>{status}</div>
       </Form>
     </Grid.Column>
