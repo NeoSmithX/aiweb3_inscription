@@ -11,8 +11,10 @@ import 'semantic-ui-css/semantic.min.css'
 
 import { SubstrateContextProvider, useSubstrateState } from './substrate-lib'
 import { DeveloperConsole } from './substrate-lib/components'
-import Transfer from './Transfer'
+import Web3Party from './Web3Party'
+import Web3Party_Admin from './Web3Party_Admin'
 import AccountSelector from './AccountSelector'
+import Footnote from './Footnote'
 // import Balances from './Balances'
 // import BlockNumber from './BlockNumber'
 // import Events from './Events'
@@ -65,6 +67,7 @@ function Main() {
       <Container>
         <Grid stackable columns="equal">
           <Grid.Row stretched>
+          <Web3Party_Admin/>
             {/* <NodeInfo />
             <Metadata />
             <BlockNumber />
@@ -74,7 +77,9 @@ function Main() {
             {/* <Balances /> */}
           </Grid.Row>
           <Grid.Row>
-            <Transfer />
+            <Web3Party />
+
+            
             {/* <Upgrade /> */}
           </Grid.Row>
           <Grid.Row>
@@ -87,6 +92,7 @@ function Main() {
         </Grid>
       </Container>
       <DeveloperConsole />
+      <Footnote /> 
     </div>
   )
 }
